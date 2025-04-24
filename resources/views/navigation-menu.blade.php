@@ -16,6 +16,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('email') }}" :active="request()->routeIs('email')">
+                        {{ __('Send Email') }}
+                    </x-nav-link>
+                </div>
+                {{-- add menu for sending email --}}
+                {{-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('email') }}" :active="request()->routeIs('email')">
+                        {{ __('Send Email') }}
+                    </x-jet-nav-link>
+                </div> --}}
+                {{-- end menu for sending email --}}
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">

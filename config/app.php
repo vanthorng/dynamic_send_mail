@@ -105,6 +105,11 @@ return [
         ),
     ],
 
+    // 'providers' => [
+    //     App\Providers\MailConfigProvider::class,
+
+    // ],
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver
