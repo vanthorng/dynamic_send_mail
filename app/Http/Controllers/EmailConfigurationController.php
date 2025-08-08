@@ -56,7 +56,7 @@ class EmailConfigurationController extends Controller
     //     }
     // }
 
-    // ========= [ Send email ] Work On .env =========
+    // ========= [ Send email ] Work On .env ========= 
 
     // public function sendEmail(Request $request)
     // {
