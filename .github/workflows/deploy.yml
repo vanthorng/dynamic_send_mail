@@ -36,7 +36,17 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install awsebcli
-          REGION=${AWS_REGION:-ap-southeast-1}
-          eb init "$EB_APP_NAME" --platform "PHP 8.2" --region "$REGION"
+
+          # Configure AWS CLI
+          aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
+          aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+          aws configure set default.region "$AWS_REGION"
+
+          # Initialize EB CLI non-interactively
+          eb init "$EB_APP_NAME" --platform "PHP 8.2" --region "$AWS_REGION"
+
+          # Set environment
           eb use "$EB_ENV_NAME"
+
+          # Deploy
           eb deploy --staged --timeout 20
