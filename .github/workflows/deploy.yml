@@ -35,7 +35,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: |
+          pip install --upgrade pip
           pip install awsebcli
-          eb init ${{ secrets.EB_APP_NAME }} --platform "PHP 8.2" --region ${{ secrets.AWS_DEFAULT_REGION }}
+          eb init ${{ secrets.EB_APP_NAME }} --platform "PHP 8.2" --region ${{ secrets.AWS_REGION }}
           eb use ${{ secrets.EB_ENV_NAME }}
           eb deploy --staged --timeout 20
