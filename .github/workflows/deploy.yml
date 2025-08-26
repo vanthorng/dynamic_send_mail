@@ -1,0 +1,44 @@
+name: Deploy Laravel to AWS EB
+
+on:
+  push:
+    branches:
+      - test  # or change to your deployment branch
+
+jobs:
+  deploy:
+    name: Deploy to AWS Elastic Beanstalk
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🧰 Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, bcmath, curl, fileinfo, json, openssl, pdo, tokenizer, xml
+
+      - name: 📦 Install Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: 🔐 Configure AWS Credentials
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+          echo "[default]" > ~/.aws/config
+          echo "region=${{ secrets.AWS_REGION }}" >> ~/.aws/config
+
+      - name: ✅ Test Credentials
+        run: aws sts get-caller-identity
+
+      - name: 📡 Deploy to Elastic Beanstalk
+        run: |
+          pip install --upgrade pip
+          pip install awsebcli
+          eb init ${{ secrets.EB_APP_NAME }} --platform "PHP 8.2" --region ${{ secrets.AWS_REGION }}
+          eb use ${{ secrets.EB_ENV_NAME }}
+          eb deploy --staged --timeout 20
